@@ -1,0 +1,92 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{epstopdf}
+\DeclareGraphicsExtensions{.eps}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{verbatim}
+\usepackage[tis]{}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+\newtheorem{theorem}{Theorem}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ left=15mm,
+ right=15mm,
+ top=8mm,
+ bottom =8mm,
+ }
+\usepackage{lipsum}
+\usepackage[english]{babel}
+ \usepackage{fancyhdr}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+\title{\textbf{CS 771A: Intro To Machine Learning} \\Handwritten Mathematical Expressions to \LaTeX\\
+\textbf{Group: 27 Abhyãsa}}
+\author{ \textsc{Aravind reddy}\{arareddy@iitk.ac.in\} \and \textsc{Gunda Abhishek}\{abhigun@iitk.ac.in\} \\  \and \textsc{Harsha Nalluru}\{harshan@iitk.ac.in\} \and \textsc{Krishna Karthik}\{jkrishna@iitk.ac.in\} \and \textsc{Gowtham Prudhvi}\{gowthamp@iitk.ac.in\}}
+
+\begin{document}
+\maketitle
+\section*{Problem Statement}
+Converting handwritten mathematical expressions to LaTeX code using Machine Learning. \hfill \\
+\par Mathematical expressions are a critical part in most engineering disciplines. Giving a mathematical expression as an input to a computer is more troublesome when compared to giving plain text. LaTeX is very flexible and powerful tool which has the ability to render complex mathematical expressions. In this project, we aim to build an application which is capable of taking a handwritten mathematical expression as input and outputs the LaTeX code for the corresponding expression.
+
+\section*{Approach}
+An application is to be built where input from the user is taken from a sketch pad, application takes snapshot of this handwritten expression and gives as an input to the machine learning model. The following steps are performed to the input.
+\begin{itemize}
+\item[]	\textbf{Expression Detection}
+\vspace{-0.5em}
+\item[] Expressions must be first identified and segmented. Segmentation\cite{chang} gets more difficult as there would be distinctions in the size of symbol which is quite a challenge to extract the symbols from an expression.
+\item[]	\textbf{Symbol Recognition}
+\vspace{-0.5em}
+\item[] Objects obtained from the segmented expression are tested for the character they represent. Variations in the writing styles and the image quality makes it more difficult to recognize the symbol. It requires the machine learning model to surpass these difficulties.For each of the characters, the model will be generating scores for the corresponding results.
+\item[] \textbf{Latexification}
+\vspace{-0.5em}
+\item[] Based on the scores given by the machine learning model for each of the characters in the expression, the resulting expressions will be ranked in the order of resemblance with the original expression. The latex code of the expression that is highly likely to resemble the input is provided as the output of the application.
+\end{itemize}
+
+\section*{Machine Learning Model}
+Designing an algorithm to extract characters from the expression and developing an ML model for recognizing the symbols using the Handwritten math symbols dataset\cite{kaggle} from Kaggle\cite{kaggle}, by training and testing using the  Nearest Neighbour algorithm\cite{Opencv}, SVM\cite{SVM}, Neural Networks, e.t.c., algorithms, and eventually integrating it in the application's workflow to output the results in the order of resemblance.
+
+\section*{Advancements}
+Extending the application to Online Learning\cite{online}, where each of the characters of the input are added to train the model in an online fashion.
+
+\section*{Existing work}
+The links given below are part of the existing work that has been done over the past years .\\
+\begin{itemize}
+\item The segmentation of images as discussed above can be done using various methods which can be found in \cite{SVM}. The model was trained using an SVM classifier for which the accuracy for 9 classes chosen on the test data set was 90$\%$. We hope to increase the size of the dataset while maintaining the accuracy.
+\item \cite{graph} addresses the problem of segmenting an image into regions.
+\item In \cite{chang}, segmentation is done using the K-Means Algorithm and character recognition is done using Convolutional neural networks.
+\item Machine Learning model trained using neural networks, the accuracy for 101 classes chosen on the test data set is  81.5$\%$. We hope to increase the size of the dataset and improve the accuracy. \cite{offline}
+\item OpenCV's OCR of Hand-written Data of characters in a single image using kNN.\cite{Opencv} This might partially help in character recognition after segmenting the image.
+\end{itemize}
+
+
+\begin{thebibliography}{1}
+\bibitem{chang} J. Chang, S. Gupta and A. Zhang. \href{http://cs229.stanford.edu/proj2016/report/ChangGuptaZhang-PainfreeLatexWithOpticalCharacterRecognitionAndMachineLearning-report.pdf}{\emph{Painfree LaTeX with Optical Character Recognition and Machine Learning.}}  Project Report, CS229, Autumn 2016, Stanford University.
+\bibitem{Opencv} A. Mordvintsev and K. Abid. \href{http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_ml/py_knn/py_knn_opencv/py_knn_opencv.html}{\emph{OCR of Hand-written Data using kNN.}} OpenCV- Python Tutorials, Revision 43532856, 2013.
+\bibitem{SVM} Abirami M, Rajashri S and Ramya R. \href{https://ijircce.com/upload/2017/march/177_Comprehending.pdf}{\emph{Comprehending Handwritten Mathematical Formulation Using SVM Classifier.}} International Journal of Innovative Research in Computer
+and Communication Engineering, Vol. 5, Issue. 3:4556-4560, March 2017.
+\bibitem{online} M. Thoma.\href{https://arxiv.org/pdf/1511.09030.pdf}{\emph{On-line Recognition of Handwritten Mathematical Symbols.}} arXiv:1511.09030, 2015.
+\bibitem{kaggle} X. Nano \href{https://www.kaggle.com/xainano/handwrittenmathsymbols}{\emph{Handwritten Math symbols dataset.}} Kaggle
+\bibitem{blog} T. Lech \href{http://blog.mathocr.com/}{\emph{Math to Latex Blog}}
+\bibitem{graph}Felzenszwalb, Pedro F. and Daniel P. Huttenlocher. \href{http://people.cs.uchicago.edu/~pff/papers/seg-ijcv.pdf}{\emph{Efficient Graph-Based Image Segmentation.}} International journal of computer vision 59.2 (2004): 167-181.
+\bibitem{offline} Y. Peng and Y. Zhang. \href{http://vision.soic.indiana.edu/b657/sp2016/projects/yisupeng/paper.pdf}{\emph{Offline Mathematical Character Recognition.}} Project Report, CSCI B657, Spring 2016, Indiana University.
+
+\end{thebibliography}
+\end{document}
