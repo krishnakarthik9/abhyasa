@@ -1,23 +1,12 @@
 import sys
-import numpy as np
+import time
 import pickle
-from sklearn import model_selection, svm, preprocessing
-from sklearn.metrics import accuracy_score,confusion_matrix
-# from MNIST_Dataset_Loader.mnist_loader import MNIST
-import matplotlib.pyplot as plt
-from matplotlib import style
-import os
-from PIL import Image 
 import numpy as np
-import PIL
+from sklearn import svm
+from matplotlib import style
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score,confusion_matrix
 
-np.set_printoptions(threshold=np.nan)
-style.use('ggplot')
-
-
-# Save all the Print Statements in a Log file.
-old_stdout = sys.stdout
-sys.stdout = open("summary.log","w")
 class SVM(object):
     def __init__(self, train_img, train_labels, test_img, test_labels):
         self.train_img = train_img
@@ -28,20 +17,24 @@ class SVM(object):
         # SVM classifier
         self.clf = svm.SVC(gamma=0.1, kernel='poly')
 
+        np.set_printoptions(threshold=np.nan)
+        style.use('ggplot')
+        # Save all the SVM Print Statements in a Log file.
+        self.old_stdout = sys.stdout
+        self.log_file = open("outputs/logs/" + "summary_svm" + str(int(time.time())) + ".log","w")
+        sys.stdout = self.log_file
+
     def train(self):
         '''
         self.clf to fit train data
         '''
         print('\nSVM Classifier with gamma = 0.1; Kernel = polynomial')
         print('\nPickling the Classifier for Future Use...')
-        # self.clf = svm.SVC(gamma=0.1, kernel='poly')
         self.clf.fit(self.train_img,self.train_labels)
 
         with open('svm.pickle','wb') as f:
             pickle.dump(self.clf, f)
 
-        
-        # return self.clf 
     def test(self):
         '''
         use self.clf to get score/accuracy
@@ -49,9 +42,11 @@ class SVM(object):
         draws plot
         '''
         self.train()
+
         pickle_in = open('svm.pickle','rb')
         trained_clf = pickle.load(pickle_in)
-        # trained_clf = self.train()
+        pickle_in.close()
+
         print('\nCalculating Accuracy of trained Classifier...')
         acc = trained_clf.score(self.test_img,self.test_labels)
 
@@ -68,6 +63,11 @@ class SVM(object):
         print('\nPredicted Values: ',pred_labels)
         print('\nAccuracy of Classifier on Validation Images: ',accuracy)
         print('\nConfusion Matrix: \n',conf_mat)
+
+        # close log_file and reset stdout
+        sys.stdout = self.old_stdout
+        self.log_file.close()
+
         return acc,pred_labels,accuracy,conf_mat
 
 
@@ -78,11 +78,8 @@ class SVM(object):
         plt.colorbar()
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
-        plt.show()
-
-        sys.stdout = old_stdout
-        # log_file.close()
-
+        # plt.show()
+        plt.savefig('outputs/confusion_matrix.png')
 
         # Show the Test Images with Original and Predicted Labels
         a = np.random.randint(1,40,15)
@@ -90,6 +87,5 @@ class SVM(object):
             two_d = (np.reshape(self.test_img[i], (45, 45)) * 255).astype(np.uint8)
             plt.title('Original Label: {0}  Predicted Label: {1}'.format(self.test_labels[i],pred_labels[i]))
             plt.imshow(two_d, interpolation='nearest',cmap='gray')
-            plt.show()
-
-
+            # plt.show()
+            plt.savefig('outputs/' + str(i) + '.png')
