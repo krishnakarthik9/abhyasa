@@ -6,9 +6,10 @@ def main():
     test_size_ratio = 0.1
 
     loader = Data_Loader(data_path)
+    # unshuffled split of data to train and test
     [train_img, train_labels, test_img, test_labels] = [np.array(x) for x in loader.load_all_data(test_size_ratio)]
-    print train_img, train_labels, len(train_img), len(train_labels)
-    print test_img, test_labels, len(test_img), len(test_labels)
+
+    # TODO: call SVM(train_img, train_labels, test_img, test_labels) train, test
 
 if __name__ == '__main__':
     main()
