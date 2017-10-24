@@ -1,5 +1,5 @@
 from data_loader import Data_Loader
-# from svm import SVM
+from svm import SVM
 from cnn1 import CNN1
 import numpy as np
 import sys

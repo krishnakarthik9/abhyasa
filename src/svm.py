@@ -21,7 +21,7 @@ class SVM(object):
         style.use('ggplot')
         # Save all the SVM Print Statements in a Log file.
         self.old_stdout = sys.stdout
-        self.log_file = open("outputs/logs/" + "summary_svm" + str(int(time.time())) + ".log","w")
+        self.log_file = open("outputs/logs/" + "summary_svm" + str(int(time.time())) + ".log","w+")
         sys.stdout = self.log_file
 
     def train(self):

@@ -1,15 +1,12 @@
 import numpy as np
-import argparse
 import cv2
 from cnn import CNN
 from keras.utils import np_utils
 from keras import optimizers
-# from sklearn.datasets import fetch_mldata
-# from sklearn import cross_validation
 import os
 from PIL import Image 
 import numpy as np
-import PIL
+
 np.set_printoptions(threshold=np.nan)
 
 class CNN1(object):
@@ -19,9 +16,11 @@ class CNN1(object):
 		self.test_img = test_img
 		self.test_labels = test_labels
 		self.b_size=16
+		self.num_epoch=5
 
 	def train(self):
 
+		#Change data to required format
 		img_rows,img_columns = 45,45
 		train_data = self.train_img.reshape((self.train_img.shape[0], img_rows,img_columns))
 		train_data = train_data[:, np.newaxis, :, :]
@@ -36,28 +35,23 @@ class CNN1(object):
 			self.train_labels[i]=label_map[self.train_labels[i]]
 		for j in range(len(self.test_labels)):
 			self.test_labels[j]=label_map[self.test_labels[j]]
+		
 		# Transform training and testing data to 10 classes in range [0,classes] ; num. of classes = 0 to 9 = 10 classes
 		total_classes = count
 		train_labels = np_utils.to_categorical(self.train_labels, total_classes)
-		print(train_labels)
 		test_labels = np_utils.to_categorical(self.test_labels,total_classes)
-		# quit()
+
+
 		# Defing and compile the SGD optimizer and CNN model
 		print('\n Compiling model...')
 		sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-		# print img_columns
-		# print total_classes
 		clf = CNN().build(img_rows,img_columns,1,total_classes)
-		# print(clf)
-		# quit()
 		clf.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
 
 		# Initially train and test the model; If weight saved already, load the weights using arguments.
-		num_epoch = 5		# Number of epochs
+		num_epoch = self.num_epoch		# Number of epochs
 		verb = 1			# Verbose
 		print('\nTraining the Model...')
-		# train_img=np.array([train_img])
-		# print train_img.shape
 		clf.fit(train_data, train_labels, batch_size=self.b_size, nb_epoch=num_epoch,verbose=verb)
 		
 		# Evaluate accuracy and loss function of test data
