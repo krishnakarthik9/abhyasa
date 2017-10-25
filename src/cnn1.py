@@ -56,7 +56,7 @@ class CNN1(object):
 		
 		# Evaluate accuracy and loss function of test data
 		print('Evaluating Accuracy and Loss Function...')
-		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=b_size, verbose=1)
+		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=self.b_size, verbose=1)
 		print('Accuracy of Model: {:.2f}%'.format(accuracy * 100))
 		clf.save_weights('model.h5', overwrite=True)
 		return accuracy
