@@ -1,8 +1,11 @@
 from data_loader import Data_Loader
 from svm import SVM
 from cnn1 import CNN1
+import PIL
 import numpy as np
+from PIL import Image
 import sys
+import os
 
 def main():
 	# print("something")
@@ -26,8 +29,27 @@ def main():
 			accuracy=cnn_classifier.test()
 		elif ml_step=="train":
 			accuracy=cnn_classifier.train()
-		return accuracy
+		elif ml_step=="predict":
+			file_path="test.jpg"
+			img = np.asarray(Image.open(file_path).convert('L').resize((45,45), Image.ANTIALIAS)).flatten()
+			features=[]
+			features.append(img/255.0)
+			test_img=np.array(features)
+			# print(test_img.shape)
+			img_rows,img_columns=45,45
+			test_data = test_img.reshape((test_img.shape[0], img_rows,img_columns))
+			test_data = test_data[:, np.newaxis, :, :]
+			# print(test_data.shape)
+			prediction=cnn_classifier.predict(test_data[np.newaxis,0])
+			count = 0
+			feature_map={}
+			for folder in os.listdir("./data"):
+				# print(folder+":"+str(count))
+				feature_map[count]=folder
+				count+=1
+			print(feature_map[prediction[0]])
+		return
 if __name__ == '__main__':
 	# print("something")
-	accuracy=main()
-	print(accuracy)
+	main()
+	# print(accuracy)

@@ -86,3 +86,17 @@ class CNN1(object):
 		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=self.b_size, verbose=1)
 		print('Accuracy of Model: {:.2f}%'.format(accuracy * 100))
 		return accuracy
+	def predict(self,test_img):
+		img_rows,img_columns = 45,45
+		count = 0
+		label_map={}
+		for folder in os.listdir("./data"):
+			label_map[folder]=count
+			count+=1
+		total_classes = count
+		clf = CNN().build(img_rows,img_columns,1,total_classes,'model.h5')
+		probs = clf.predict(test_img)
+		# return probs
+		prediction = probs.argmax(axis=1)
+		return prediction
+
