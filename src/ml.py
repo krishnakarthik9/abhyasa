@@ -1,6 +1,6 @@
 from data_loader import Data_Loader
 from svm import SVM
-from cnn1 import CNN1
+#from cnn1 import CNN1
 import PIL
 import numpy as np
 from PIL import Image
