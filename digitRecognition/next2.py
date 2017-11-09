@@ -32,7 +32,7 @@ def binarize(image_abs_path):
 
 # data = binary_blobs(200, blob_size_fraction=.2, volume_fraction=.35, seed=1)
 
-data = binarize('cropped1.jpg')
+data = binarize('cropped2.jpg')
 #plt.imshow(data)
 # = Image.fromarray(im1)
 skeleton = skeletonize(data)
@@ -49,7 +49,6 @@ skeleton = skeletonize(data)
 # ax[1].imshow(skeleton, cmap=plt.cm.gray, interpolation='nearest')
 # ax[1].set_title('skeletonize')
 # ax[1].axis('off')
-
 data = skeleton == 0 
 #plt.figure(figsize = (2,2))
 #plt.imshow(data, cmap=plt.cm.gray, interpolation=None)

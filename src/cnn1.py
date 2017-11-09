@@ -1,22 +1,22 @@
 import numpy as np
-import cv2
+# import cv2
 from cnn import CNN
 from keras.utils import np_utils
 from keras import optimizers
 import os
-from PIL import Image 
+from PIL import Image
 import numpy as np
 
 np.set_printoptions(threshold=np.nan)
 
 class CNN1(object):
-	# def __init__(self, train_img, train_labels, test_img, test_labels):
-	# 	self.train_img = train_img
-	# 	self.train_labels = train_labels
-	# 	self.test_img = test_img
-	# 	self.test_labels = test_labels
-	# 	self.b_size=16
-	# 	self.num_epoch=5
+	def __init__(self, train_img, train_labels, test_img, test_labels):
+		self.train_img = train_img
+		self.train_labels = train_labels
+		self.test_img = test_img
+		self.test_labels = test_labels
+		self.b_size=5
+		self.num_epoch=40
 
 	def train(self):
 
@@ -35,7 +35,7 @@ class CNN1(object):
 			self.train_labels[i]=label_map[self.train_labels[i]]
 		for j in range(len(self.test_labels)):
 			self.test_labels[j]=label_map[self.test_labels[j]]
-		
+
 		# Transform training and testing data to 10 classes in range [0,classes] ; num. of classes = 0 to 9 = 10 classes
 		total_classes = count
 		train_labels = np_utils.to_categorical(self.train_labels, total_classes)
@@ -53,7 +53,7 @@ class CNN1(object):
 		verb = 1			# Verbose
 		print('\nTraining the Model...')
 		clf.fit(train_data, train_labels, batch_size=self.b_size, nb_epoch=num_epoch,verbose=verb)
-		
+
 		# Evaluate accuracy and loss function of test data
 		print('Evaluating Accuracy and Loss Function...')
 		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=self.b_size, verbose=1)
@@ -90,13 +90,12 @@ class CNN1(object):
 		img_rows,img_columns = 45,45
 		count = 0
 		label_map={}
-		for folder in os.listdir("/home/harsha/Desktop/7th_sem/cs771/project/extracted_images/"):
+		for folder in os.listdir("./data"):
 			label_map[folder]=count
 			count+=1
 		total_classes = count
 		clf = CNN().build(img_rows,img_columns,1,total_classes,'model.h5')
 		probs = clf.predict(test_img)
-		# return probs
+		print(probs)
 		prediction = probs.argmax(axis=1)
 		return prediction
-

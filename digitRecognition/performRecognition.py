@@ -13,7 +13,7 @@ def crop(image_path, coords, saved_location):
     image_obj = Image.open(image_path)
     cropped_image = image_obj.crop(coords)
     cropped_image.save(saved_location)
-    cropped_image.show()
+    #cropped_image.show()
 
 # Load the classifier
 #clf = joblib.load("digits_cls.pkl")
@@ -56,5 +56,5 @@ for rect in rects:
     # nbr = clf.predict(np.array([roi_hog_fd], 'float64'))
     # cv2.putText(im, str(int(nbr[0])), (rect[0], rect[1]),cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 3)
 
-cv2.imshow("Resulting Image with Rectangular ROIs", im)
-cv2.waitKey()
+# cv2.imshow("Resulting Image with Rectangular ROIs", im)
+# cv2.waitKey()

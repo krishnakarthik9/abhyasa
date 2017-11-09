@@ -4,3 +4,6 @@ Introduction to Machine Learning(CS771A) Course project. Team:Aravind, Gowtham, 
 
 Kaggle Dataset:
 https://drive.google.com/open?id=0B86eHLR6LlhEVjhWc19uUDFTSDg
+
+
+python ml.py cnn train image
