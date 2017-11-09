@@ -10,13 +10,13 @@ import numpy as np
 np.set_printoptions(threshold=np.nan)
 
 class CNN1(object):
-	def __init__(self, train_img, train_labels, test_img, test_labels):
-		self.train_img = train_img
-		self.train_labels = train_labels
-		self.test_img = test_img
-		self.test_labels = test_labels
-		self.b_size=16
-		self.num_epoch=5
+	# def __init__(self, train_img, train_labels, test_img, test_labels):
+	# 	self.train_img = train_img
+	# 	self.train_labels = train_labels
+	# 	self.test_img = test_img
+	# 	self.test_labels = test_labels
+	# 	self.b_size=16
+	# 	self.num_epoch=5
 
 	def train(self):
 
@@ -90,7 +90,7 @@ class CNN1(object):
 		img_rows,img_columns = 45,45
 		count = 0
 		label_map={}
-		for folder in os.listdir("./data"):
+		for folder in os.listdir("/home/harsha/Desktop/7th_sem/cs771/project/extracted_images/"):
 			label_map[folder]=count
 			count+=1
 		total_classes = count
