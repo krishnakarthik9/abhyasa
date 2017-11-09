@@ -19,7 +19,8 @@ def crop(image_path, coords, saved_location):
 #clf = joblib.load("digits_cls.pkl")
 
 # Read the input image 
-im = cv2.imread("photo_7.jpg")
+photo = "123456.jpg"
+im = cv2.imread(photo)
 
 # Convert to grayscale and apply Gaussian filtering
 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -49,7 +50,7 @@ for rect in rects:
     # roi = cv2.resize(roi, (28, 28), interpolation=cv2.INTER_AREA)
     # roi = cv2.dilate(roi, (3, 3))
     count = count + 1
-    crop('photo_7.jpg', (rect[0], rect[1], rect[0] + rect[2], rect[1] + rect[3]), 'cropped'+str(count)+'.jpg')
+    crop(photo, (rect[0], rect[1], rect[0] + rect[2], rect[1] + rect[3]), 'cropped'+str(count)+'.jpg')
     # Calculate the HOG features
     #roi_hog_fd = hog(roi, orientations=9, pixels_per_cell=(14, 14), cells_per_block=(1, 1), visualise=False)
     # nbr = clf.predict(np.array([roi_hog_fd], 'float64'))

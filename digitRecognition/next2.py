@@ -51,9 +51,12 @@ skeleton = skeletonize(data)
 # ax[1].axis('off')
 
 data = skeleton == 0 
-plt.imshow(data, cmap=plt.cm.gray, interpolation='nearest')
-plt.axis('off')
-plt.savefig('final.jpg')
+#plt.figure(figsize = (2,2))
+#plt.imshow(data, cmap=plt.cm.gray, interpolation=None)
+#plt.imshow(data, cmap=plt.cm.binary, interpolation=None)
+#plt.axis('off')
+#extent = ax.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+plt.imsave('final.jpg',data, format="jpg", cmap="hot")
 
 # ax[2].imshow(skeleton3d, cmap=plt.cm.gray, interpolation='nearest')
 # ax[2].set_title('skeletonize_3d')
