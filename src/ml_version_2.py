@@ -30,12 +30,13 @@ def main():
 		elif ml_step=="train":
 			accuracy=cnn_classifier.train()
 		elif ml_step=="predict":
+			offset=int(sys.argv[4]) #image or file
 			i = 0
 			file = os.listdir('./1')
 			file_size = len(file)
 			training_list = []
-			while i < file_size:
-				img = np.asarray(Image.open('./1/'+file[i]).convert('L').resize((45,45), Image.ANTIALIAS)).flatten()
+			while i < 50:
+				img = np.asarray(Image.open('./1/'+file[i+offset]).convert('L').resize((45,45), Image.ANTIALIAS)).flatten()
 				features=[]
 				features.append(img/255.0)
 				test_img=np.array(features)
@@ -51,7 +52,7 @@ def main():
 					# print(folder+":"+str(count))
 					feature_map[count]=folder
 					count+=1
-				print(feature_map[prediction[0]], i)
+				print(feature_map[prediction[0]], i+offset)
 				training_list.append(probability)
 				i = i+1;
 
@@ -59,11 +60,12 @@ def main():
 			file_size = len(ones_file)
 			count = 0
 			final_ones_list = []
-			while count<file_size:
-				if training_list[count] > 0.75:
+			while count < 50:
+				if training_list[count] > 0.85:
 					final_ones_list.append(ones_file[count])
 				count += 1
-			f1.open('final_ones.txt','a')
+			f1 = open('final_ones1.txt','a')
+			f1.write('\n')
 			f1.write('\n'.join(final_ones_list))
 			f1.close()
 		return
