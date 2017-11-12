@@ -7,3 +7,7 @@ https://drive.google.com/open?id=0B86eHLR6LlhEVjhWc19uUDFTSDg
 
 
 python ml.py cnn train image
+python ml.py cnn predict file
+
+import os
+os.listdir('./data')
