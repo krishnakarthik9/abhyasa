@@ -30,13 +30,15 @@ def main():
 		elif ml_step=="train":
 			accuracy=cnn_classifier.train()
 		elif ml_step=="predict":
-			offset=int(sys.argv[4]) #image or file
+			offset=int(sys.argv[5]) #image or file
 			i = 0
-			file = os.listdir('./1')
+			folder_name = sys.argv[4]
+			file = os.listdir('./extracted_images/' + folder_name)
 			file_size = len(file)
 			training_list = []
-			while i < 50:
-				img = np.asarray(Image.open('./1/'+file[i+offset]).convert('L').resize((45,45), Image.ANTIALIAS)).flatten()
+			final_list = []
+			while i < 20:
+				img = np.asarray(Image.open('./extracted_images/'+folder_name+'/'+file[i+offset]).convert('L').resize((45,45), Image.ANTIALIAS)).flatten()
 				features=[]
 				features.append(img/255.0)
 				test_img=np.array(features)
@@ -45,28 +47,29 @@ def main():
 				test_data = test_img.reshape((test_img.shape[0], img_rows,img_columns))
 				test_data = test_data[:, np.newaxis, :, :]
 				# print(test_data.shape)
-				prediction,probability=cnn_classifier.predict(test_data[np.newaxis,0],'one')
+				prediction,probability=cnn_classifier.predict(test_data[np.newaxis,0],folder_name)
 				count = 0
 				feature_map={}
 				for folder in os.listdir("./data"):
 					# print(folder+":"+str(count))
 					feature_map[count]=folder
 					count+=1
-				print(feature_map[prediction[0]], i+offset)
-				training_list.append(probability)
+				print(feature_map[prediction[0]], i+offset, file[i+offset])
+				if feature_map[prediction[0]] == folder_name:
+					if probability > 0.85:
+						final_list.append(file[i+offset])
 				i = i+1;
 
-			ones_file = os.listdir('./1')
-			file_size = len(ones_file)
-			count = 0
-			final_ones_list = []
-			while count < 50:
-				if training_list[count] > 0.85:
-					final_ones_list.append(ones_file[count])
-				count += 1
-			f1 = open('final_ones1.txt','a')
+			# _file = os.listdir('./extracted_images/'+folder_name)
+			# file_size = len(_file)
+			# count = 0
+			# while count < 50:
+			# 	if training_list[count] > 0.85:
+			# 		final_list.append(_file[count])
+			# 	count += 1
+			f1 = open('final_images/final_'+folder_name+'.txt','a')
 			f1.write('\n')
-			f1.write('\n'.join(final_ones_list))
+			f1.write('\n'.join(final_list))
 			f1.close()
 		return
 if __name__ == '__main__':

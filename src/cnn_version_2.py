@@ -91,6 +91,7 @@ class CNN1(object):
 		count = 0
 		label_map={}
 		for folder in os.listdir("./data"):
+			#print(folder,' ', path)
 			if folder == path:
 				id_prob = count
 			label_map[folder]=count
