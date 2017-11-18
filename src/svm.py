@@ -35,6 +35,17 @@ class SVM(object):
         with open('svm.pickle','wb') as f:
             pickle.dump(self.clf, f)
 
+    def predict(self, img):
+        pickle_in = open('svm.pickle','rb')
+        trained_clf = pickle.load(pickle_in)
+        pickle_in.close()
+
+        pred_label = trained_clf.predict(img)
+        print(pred_label)
+        sys.stdout = self.old_stdout
+        self.log_file.close()
+
+
     def test(self):
         '''
         use self.clf to get score/accuracy
