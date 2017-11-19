@@ -34,7 +34,6 @@ gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 # smooth the image to avoid noises
 gray = cv2.medianBlur(gray,5)
 
-
 # Apply adaptive threshold
 thresh = cv2.adaptiveThreshold(gray,255,1,1,11,2)
 thresh_color = cv2.cvtColor(thresh,cv2.COLOR_GRAY2BGR)
@@ -50,7 +49,7 @@ thresh = cv2.erode(thresh,None,iterations = 2)
 # ret, im_th = cv2.threshold(im_gray, 90, 255, cv2.THRESH_BINARY_INV)
 
 # Find the contours
-_,contours,hierarchy = cv2.findContours(im_th,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+_,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 contours = sorted(contours, key=lambda cont: cv2.boundingRect(cont)[0])
 
 X_cord = []
@@ -58,16 +57,64 @@ Y_cord = []
 W_cord = []
 H_cord = []
 labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+
+def getlabels():
+	pass
 # For each contour, find the bounding rectangle and draw it
+def processcontour(x,y,w,h):
+	for i in xrange(0,len(X_cord)):
+		x2 = X_cord[i]+W_cord[i]
+		x1 = X_cord[i]
+		y1 = Y_cord[i]
+		y2 = Y_cord[i]+H_cord[i]
+		if (x > x1 and x < x2 and -(y+h) > y1 and -(y+h) < y2):
+			if x+w < x2 :
+				# Check for Height 
+				if -y < y2 or abs((y2 +y +h)*1.0/h) > 0.6:
+					# Discard
+					print x,-(y+h),x1,y1,"---case 11 ",i
+					return 0
+			else:
+				if -y < y2 and abs((x2 - x)*1.0/w) > 0.6: 
+					# Discard
+					print x,-(y+h),x1,y1,"---case 12 ",i
+					return 0
+				elif -y > y2 and abs((x2-x)*(y2+y+h)*1.0/(w*h)) > 0.6:
+					print x,-(y+h),x1,y1,"---case 13 ",i
+					return 0
+
+		elif(x+w > x1 and x+w < x2 and -(y+h) > y1 and -(y+h) < y2):
+			if -y < y2 and abs((x+w - x1)*1.0/w) > 0.6: 
+				# Discard
+				print x,-(y+h),x1,y1,"---case 21 ",i
+				return 0
+			elif -y > y2 and abs((x+w-x1)*(y2+y+h)*1.0/(w*h)) > 0.6:
+				print x,-(y+h),x1,y1,"---case 22 ",i
+				return 0
+		elif (x+w > x1 and x+w < x2 and -(y) > y1 and -(y) < y2):
+			if x > x1 and abs(-(y+y1)*1.0/(h))>0.6:
+				print x,-(y+h),x1,y1,"---case 31 ",i
+				return 0
+			elif x < x1 and abs((x+w-x1)*(y+y1)*1.0/(w*h)) > 0.6:
+				print x,-(y+h),x1,y1,"---case 32 ",i
+				return 0
+		elif x> x1 and x < x2 and -(y+h) > y1 and -(y+h) < y2 :
+			if abs((x2-x)*(-y-h-y1)*1.0/(w*h)) > 0.6:
+				print x,-(y+h),x1,y1,"---case 41 ",i
+				return 0
+
+	return 1
+
 for cnt in contours:
     x,y,w,h = cv2.boundingRect(cnt)
     # print x;
     cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-    # get labels of this rectangle
-    X_cord.append(x)
-    Y_cord.append(-(y+h))
-    W_cord.append(w)
-    H_cord.append(h)
+    if (processcontour(x,y,w,h)):
+	    # get labels of this rectangle
+	    X_cord.append(x)
+	    Y_cord.append(-(y+h))
+	    W_cord.append(w)
+	    H_cord.append(h)
 
     # cv2.rectangle(thresh_color,(x,y),(x+w,y+h),(0,255,0),2)
 
@@ -169,7 +216,9 @@ def shitfun(prev_node,curr_node,count):
 			else:
 				return shitfun(prev_node.parent,curr_node,count)
 			return prev_node
+# cv2.resize(img,(800,600))
 cv2.imshow('img',img)
+# cv2.resizeWindow('image', 800,600)
 # cv2.imshow('res',thresh_color)
 cv2.waitKey()
 
