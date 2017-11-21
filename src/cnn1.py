@@ -10,7 +10,7 @@ import numpy as np
 np.set_printoptions(threshold=np.nan)
 
 class CNN1(object):
-	def __init__(self, train_img, train_labels, test_img, test_labels):
+	def __init__(self, train_img=None, train_labels=None, test_img=None, test_labels=None):
 		self.train_img = train_img
 		self.train_labels = train_labels
 		self.test_img = test_img
@@ -99,3 +99,17 @@ class CNN1(object):
 		print(probs)
 		prediction = probs.argmax(axis=1)
 		return prediction
+
+
+	def get_probs_cnn(self,img):
+		img_rows,img_columns = 45,45
+		count = 0
+		label_map={}
+		for folder in os.listdir("./data"):
+			label_map[folder]=count
+			count+=1
+		total_classes = count
+		clf = CNN().build(img_rows,img_columns,1,total_classes,'model.h5')
+		probs = clf.predict(img)
+		return probs
+

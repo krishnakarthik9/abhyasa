@@ -8,21 +8,22 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score,confusion_matrix
 
 class SVM(object):
-    def __init__(self, train_img, train_labels, test_img, test_labels):
-        self.train_img = train_img
-        self.train_labels = train_labels
-        self.test_img = test_img
-        self.test_labels = test_labels
+    def __init__(self, train_img=None, train_labels=None, test_img=None, test_labels=None):
+        if train_img:
+            self.train_img = train_img
+            self.train_labels = train_labels
+            self.test_img = test_img
+            self.test_labels = test_labels
 
-        # SVM classifier
-        self.clf = svm.SVC(gamma=0.1, kernel='poly',probability=True)
+            # SVM classifier
+            self.clf = svm.SVC(gamma=0.1, kernel='poly',probability=True)
 
-        np.set_printoptions(threshold=np.nan)
-        style.use('ggplot')
-        # Save all the SVM Print Statements in a Log file.
-        self.old_stdout = sys.stdout
-        self.log_file = open("outputs/logs/" + "summary_svm" + str(int(time.time())) + ".log","w+")
-        sys.stdout = self.log_file
+            np.set_printoptions(threshold=np.nan)
+            style.use('ggplot')
+            # Save all the SVM Print Statements in a Log file.
+            self.old_stdout = sys.stdout
+            self.log_file = open("outputs/logs/" + "summary_svm" + str(int(time.time())) + ".log","w+")
+            sys.stdout = self.log_file
 
     def train(self):
         '''
@@ -45,6 +46,15 @@ class SVM(object):
         print(pred_label, proba)
         sys.stdout = self.old_stdout
         self.log_file.close()
+
+    def get_probs_svm(self,img):
+        pickle_in = open('svm.pickle','rb')
+        trained_clf = pickle.load(pickle_in)
+        pickle_in.close()
+
+        pred_label = trained_clf.predict(img)
+        proba = trained_clf.predict_proba(img)
+        return proba
 
 
     def test(self):

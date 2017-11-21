@@ -1,3 +1,8 @@
 *.pyc
 outputs/
 src/1
+src/data
+src/*.npy
+src/extracted_images
+src/final_images/
+src/*.sh
