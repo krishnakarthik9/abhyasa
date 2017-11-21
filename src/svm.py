@@ -15,7 +15,7 @@ class SVM(object):
         self.test_labels = test_labels
 
         # SVM classifier
-        self.clf = svm.SVC(gamma=0.1, kernel='poly')
+        self.clf = svm.SVC(gamma=0.1, kernel='poly',probability=True)
 
         np.set_printoptions(threshold=np.nan)
         style.use('ggplot')
@@ -41,7 +41,8 @@ class SVM(object):
         pickle_in.close()
 
         pred_label = trained_clf.predict(img)
-        print(pred_label)
+        proba = trained_clf.predict_proba(img)
+        print(pred_label, proba)
         sys.stdout = self.old_stdout
         self.log_file.close()
 

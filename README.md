@@ -19,6 +19,9 @@ python ml_version_2.py cnn predict file
 
 
 
+python predict_svm.py test/1
+
+
 
 import os
 os.listdir('./data')

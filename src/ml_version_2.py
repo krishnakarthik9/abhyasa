@@ -56,7 +56,7 @@ def main():
 					count+=1
 				print(feature_map[prediction[0]], i+offset, file[i+offset])
 				if feature_map[prediction[0]] == folder_name:
-					if probability > 0.85:
+					if probability > 0.6:
 						final_list.append(file[i+offset])
 				i = i+1;
 
