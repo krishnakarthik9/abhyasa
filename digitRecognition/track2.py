@@ -1,7 +1,15 @@
 import cv2
 import numpy as np
 import sys
-
+from PIL import Image
+from skimage import img_as_ubyte
+from skimage.io import imread
+from matplotlib import pyplot as plt
+from skimage.morphology import skeletonize, skeletonize_3d
+from skimage.filters import gaussian, threshold_minimum
+from skimage.morphology import square, erosion, thin
+from skimage.data import binary_blobs
+White = [255,255,255]
 class Node(object):
 	def __init__(self, top=None, bottom=None, nxt=None, parent=None, value=None, label=None):
 		self.top = top
@@ -10,7 +18,18 @@ class Node(object):
 		self.label = label
 		self.parent = parent
 		self.value = value
-
+def thinning(image_abs_path):
+	grayscale_img = imread(image_abs_path, as_grey=True)
+	gaussian_blur = gaussian(grayscale_img, sigma=1)
+	thresh_sauvola = threshold_minimum(gaussian_blur)
+	binary_img = gaussian_blur < thresh_sauvola
+	thinned_img = skeletonize(binary_img)
+	thinned_img = thinned_img == 0
+	plt.imsave('output.png',thinned_img, format="png", cmap="hot") 
+def crop(image_path, coords, saved_location):
+	image_obj = Image.open(image_path)
+	cropped_image = image_obj.crop(coords)
+	cropped_image.save(saved_location)
 def printTree(start):
 	if start is None:
 		return
@@ -41,14 +60,6 @@ thresh_color = cv2.cvtColor(thresh,cv2.COLOR_GRAY2BGR)
 # apply some dilation and erosion to join the gaps
 thresh = cv2.dilate(thresh,None,iterations = 3)
 thresh = cv2.erode(thresh,None,iterations = 2)
-
-# im_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)
-
-# # Threshold the image
-# ret, im_th = cv2.threshold(im_gray, 90, 255, cv2.THRESH_BINARY_INV)
-
-# Find the contours
 _,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 contours = sorted(contours, key=lambda cont: cv2.boundingRect(cont)[0])
 
@@ -57,9 +68,33 @@ Y_cord = []
 W_cord = []
 H_cord = []
 labels = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+def squareit(i):
+	crop(sys.argv[1],(X_cord[i],-Y_cord[i]-H_cord[i], X_cord[i] + W_cord[i], -Y_cord[i]),"output.png")
+	img1 = cv2.imread('output.png')
+	dif_abs = abs((W_cord[i]-H_cord[i]))
+	padding = dif_abs/2
+	if W_cord[i]>H_cord[i]:
+		if dif_abs % 2 ==1:
+			padded_img= cv2.copyMakeBorder(img1,padding+1,padding,0,0,cv2.BORDER_CONSTANT,value=White)
+		else:
+			padded_img= cv2.copyMakeBorder(img1,padding,padding,0,0,cv2.BORDER_CONSTANT,value=White)
+
+	else:
+		if dif_abs % 2 ==1:
+			padded_img= cv2.copyMakeBorder(img1,0,0,padding+1,padding,cv2.BORDER_CONSTANT,value=White)
+		else:
+			padded_img= cv2.copyMakeBorder(img1,0,0,padding,padding,cv2.BORDER_CONSTANT,value=White)
+	padded_img= cv2.resize(padded_img, (45,45)) 
+	# plt.imsave('final.jpg',new_image, format="jpg", cmap="hot")
+	plt.imsave('output.png',padded_img, format="png", cmap="hot")
+	thinning("output.png")
 
 def getlabels():
-	pass
+	for i in xrange(0,len(X_cord)):
+		squareit(i)
+		# Test the Squared Image received
+		# l = process(sqimage)
+		# labels.append(l)
 # For each contour, find the bounding rectangle and draw it
 def processcontour(x,y,w,h):
 	for i in xrange(0,len(X_cord)):
@@ -106,23 +141,23 @@ def processcontour(x,y,w,h):
 	return 1
 
 for cnt in contours:
-    x,y,w,h = cv2.boundingRect(cnt)
-    # print x;
-    cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-    if (processcontour(x,y,w,h)):
-	    # get labels of this rectangle
-	    X_cord.append(x)
-	    Y_cord.append(-(y+h))
-	    W_cord.append(w)
-	    H_cord.append(h)
+	x,y,w,h = cv2.boundingRect(cnt)
+	# print x;
+	cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+	if (processcontour(x,y,w,h)):
+		# get labels of this rectangle
+		X_cord.append(x)
+		Y_cord.append(-(y+h))
+		W_cord.append(w)
+		H_cord.append(h)
 
-    # cv2.rectangle(thresh_color,(x,y),(x+w,y+h),(0,255,0),2)
+	# cv2.rectangle(thresh_color,(x,y),(x+w,y+h),(0,255,0),2)
 
 print X_cord
 print Y_cord
 print W_cord
 print H_cord
-
+getlabels()
 # count  = 0
 
 # process subscripts, superscripts
@@ -229,5 +264,5 @@ for i in xrange(1,len(X_cord)):
 printTree(start)
 # Finally show the image
 # sys.exit(1)
-                                           
+										   
 # cv2.destroyAllWindows()
