@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 class Node(object):
-	def __init__(self, top=None, bottom=None, nxt=None, parent=None, value=None, label='X'):
+	def __init__(self, top=None, bottom=None, nxt=None, parent=None, value=None, label=None):
 		self.top = top
 		self.bottom = bottom
 		self.nxt = nxt
@@ -50,6 +50,7 @@ X_cord = []
 Y_cord = []
 W_cord = []
 H_cord = []
+labels = ['x','i','y','j']
 # For each contour, find the bounding rectangle and draw it
 for cnt in contours:
     x,y,w,h = cv2.boundingRect(cnt)
@@ -69,7 +70,7 @@ print W_cord
 print H_cord
 
 # process subscripts, superscripts
-start = Node(value=0)
+start = Node(value=0,label=labels[0])
 prev_node = start
 for i in xrange(1, len(X_cord)):
 	l_avg = (Y_cord[i-1] + (H_cord[i-1]/2))

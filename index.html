@@ -14,7 +14,7 @@
 </style>
 <body>
 <div class="doc">
-    <canvas width="400" height="400" id="cvs"></canvas>
+    <canvas width="800" height="600" id="cvs"></canvas>
     <div>
         <p>
             <button id="save" ><a>save</a></button> or <button id="convert">convert to</button> as: 
@@ -23,8 +23,8 @@
                 <option value="jpeg">jpeg</option>
                 <option value="bmp">bmp</option>
             </select><br/>
-            width : <input type="number" value="45" id="imgW" /><br/>
-            height : <input type="number" value="45" id="imgH" />
+            width : <input type="number" value="800" id="imgW" /><br/>
+            height : <input type="number" value="600" id="imgH" />
         </p>
 
     </div>
@@ -102,7 +102,7 @@
     }
     function draw () {
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillRect(0, 0, 800, 800);
     }
     
     onload = init;
