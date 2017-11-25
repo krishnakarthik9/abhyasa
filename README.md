@@ -73,3 +73,8 @@ GD parameters-lr,decay,momentum,nesterov??
 CNN model descripton is saved to model.png
 
 
+# Execution
+
+* Open the terminal, ** cd digitRecognition**
+* python3 track2.py kjhgfds.jpg
+* When the image pops up, click 'Shift' button on the keyboard, output can be seen in the terminal
