@@ -1,3 +1,3 @@
 import sys
-sys.path.append("cnn")
+sys.path.append("../src/cnn")
 from neural_network import CNN

@@ -1,5 +1,5 @@
 from data_loader import Data_Loader
-from svm import SVM
+# from svm import SVM
 from cnn1 import CNN1
 import PIL
 import numpy as np
@@ -16,7 +16,7 @@ def main():
 	test_size_ratio = 0.1
 	loader = Data_Loader(data_path)
 	# unshuffled split of data to train and test
-	class_data_count=100
+	class_data_count=1500
 	[train_img, train_labels, test_img, test_labels] = [np.array(x) for x in loader.load_all_data(test_size_ratio,data_format,class_data_count)]
 
 	if ml_algorithm == "svm":

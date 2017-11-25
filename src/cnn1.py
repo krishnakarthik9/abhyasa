@@ -15,8 +15,8 @@ class CNN1(object):
 		self.train_labels = train_labels
 		self.test_img = test_img
 		self.test_labels = test_labels
-		self.b_size=5
-		self.num_epoch=40
+		self.b_size=64
+		self.num_epoch=20
 
 	def train(self):
 
@@ -28,7 +28,7 @@ class CNN1(object):
 		test_data = test_data[:, np.newaxis, :, :]
 		label_map={}
 		count = 0
-		for folder in os.listdir("./data"):
+		for folder in os.listdir("../src/data"):
 			label_map[folder]=count
 			count+=1
 		for i in range(len(self.train_labels)):
@@ -57,7 +57,7 @@ class CNN1(object):
 		# Evaluate accuracy and loss function of test data
 		print('Evaluating Accuracy and Loss Function...')
 		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=self.b_size, verbose=1)
-		print('Accuracy of Model: {:.2f}%'.format(accuracy * 100))
+		print('Accuracy of Model {::.2f}%'.format(accuracy * 100))
 		clf.save_weights('model.h5', overwrite=True)
 		return accuracy
 
@@ -73,7 +73,7 @@ class CNN1(object):
 		test_data = test_data[:, np.newaxis, :, :]
 		label_map={}
 		count = 0
-		for folder in os.listdir("./data"):
+		for folder in os.listdir("../src/data"):
 			label_map[folder]=count
 			count+=1
 		for j in range(len(self.test_labels)):
@@ -90,7 +90,7 @@ class CNN1(object):
 		img_rows,img_columns = 45,45
 		count = 0
 		label_map={}
-		for folder in os.listdir("./data"):
+		for folder in os.listdir("../src/data"):
 			label_map[folder]=count
 			count+=1
 		total_classes = count
@@ -105,11 +105,11 @@ class CNN1(object):
 		img_rows,img_columns = 45,45
 		count = 0
 		label_map={}
-		for folder in os.listdir("./data"):
+		for folder in os.listdir("../src/data"):
 			label_map[folder]=count
 			count+=1
 		total_classes = count
-		clf = CNN().build(img_rows,img_columns,1,total_classes,'model.h5')
+		clf = CNN().build(img_rows,img_columns,1,total_classes,'../src/model.h5')
 		probs = clf.predict(img)
 		return probs
 
