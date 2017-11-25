@@ -34,10 +34,11 @@ def thinning(image_abs_path,i):
 	plt.imsave('output.png',thinned_img, format="png", cmap="hot") 
 	plt.imsave('output_'+str(i)+'.png',thinned_img, format="png", cmap="hot")
 
-def crop(image_path, coords, saved_location):
+def crop(image_path, coords, saved_location,i):
 	image_obj = Image.open(image_path)
 	cropped_image = image_obj.crop(coords)
 	cropped_image.save(saved_location)
+	cropped_image.save("_ppt"+str(i)+".png")
 
 def printTree(start):
 	if start is None:
@@ -77,7 +78,7 @@ Y_cord = []
 W_cord = []
 H_cord = []
 def squareit(i):
-	crop(sys.argv[1],(X_cord[i],-Y_cord[i]-H_cord[i], X_cord[i] + W_cord[i], -Y_cord[i]),"output.png")																																																																																																																																																																																				
+	crop(sys.argv[1],(X_cord[i],-Y_cord[i]-H_cord[i], X_cord[i] + W_cord[i], -Y_cord[i]),"output.png",i)																																																																																																																																																																																				
 	img1 = cv2.imread('output.png')
 	dif_abs = abs(int(W_cord[i]-H_cord[i]))
 	padding = int(dif_abs/2)
@@ -85,8 +86,12 @@ def squareit(i):
 		padded_img= cv2.copyMakeBorder(img1,padding,dif_abs - padding,0,0,cv2.BORDER_CONSTANT,value=White)
 	else:
 		padded_img= cv2.copyMakeBorder(img1,0,0,padding,dif_abs - padding,cv2.BORDER_CONSTANT,value=White)
+	
+	plt.imsave('_sqrd'+str(i)+'.png',padded_img, format="png", cmap="hot")
 	padded_img= cv2.resize(padded_img, (45,45)) 
 	# plt.imsave('final.jpg',new_image, format="jpg", cmap="hot")
+
+	plt.imsave('_small'+str(i)+'.png',padded_img, format="png", cmap="hot")
 	plt.imsave('output.png',padded_img, format="png", cmap="hot")
 	thinning("output.png",i)
 
@@ -113,8 +118,14 @@ def getlabels():
 			squareit(i)
 			labels[i] = predict_label(np.asarray(Image.open('output_'+str(i)+'.png').convert('L').resize((45,45), Image.ANTIALIAS)).flatten())
 		if  labels[i] == 'ascii_124':
-			labels[i] = 1
-		print("hahahahha-----------------------------", labels[i])
+			labels[i] = '1'		
+		if  labels[i] == 'times':
+			labels[i] = 'x'
+		if  labels[i] == 'sum':
+			labels[i] = '\sigma'
+		if  labels[i] == 'lambda' or labels[i] == 'Delta' or  labels[i] == 'neq' or  labels[i] == 'geq' or labels[i] == 'leq' or labels[i] == 'infty' or labels[i] == 'beta':
+			labels[i] = "\\" +	labels[i]	
+		print("Label ",i,"->\t", labels[i])
 		# Test the Squared Image received
 		# l = process(sqimage)
 		# labels.append(l)
@@ -205,21 +216,29 @@ def locate_and_label(prev_node,curr_node,count):
 	prnt = prev_node.parent
 	if prnt is None:
 		#print "count is ",count,"Inside None"
+		if curr_node.label == '2':
+			print("Inside if")
 		if l_avg < r_bot:
 				# Go to TOP of L 
 			#print "count is ",count,"Inside None 1"
+			if curr_node.label == '2':
+				print("Inside if1")
 			prev_node.top = curr_node
 			curr_node.parent = prev_node
 			prev_node = curr_node
 		elif l_avg > r_top:
 			# Go to BOT Of L
 			#print "count is ",count,"Inside None 2" 
+			if curr_node.label == '2':
+				print("Inside if2")
 			prev_node.bottom = curr_node
 			curr_node.parent = prev_node
 			prev_node = curr_node
 		else:
 			# GO to Next of L 
 			#print "count is ",count,"Inside None 3"
+			if curr_node.label == '2':
+				print("Inside if3")
 			prev_node.nxt = curr_node
 			curr_node.parent = prev_node.parent
 			prev_node = curr_node

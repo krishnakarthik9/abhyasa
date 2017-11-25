@@ -16,7 +16,7 @@ class CNN1(object):
 		self.train_labels = train_labels
 		self.test_img = test_img
 		self.test_labels = test_labels
-		
+
 		self.b_size=b_size
 		self.num_epoch=num_epoch
 
@@ -59,7 +59,7 @@ class CNN1(object):
 		# Evaluate accuracy and loss function of test data
 		print('Evaluating Accuracy and Loss Function...')
 		loss, accuracy = clf.evaluate(test_data, test_labels, batch_size=self.b_size, verbose=1)
-		print('Accuracy of Model {::.2f}%'.format(accuracy * 100))
+		print('Accuracy of Model',(accuracy * 100))
 		clf.save_weights('model.h5', overwrite=True)
 		print(model_info.history)
 		self.plot_model_history(model_info)

@@ -75,6 +75,38 @@ CNN model descripton is saved to model.png
 
 # Execution
 
-* Open the terminal, ** cd digitRecognition**
+* cd digitRecognition
 * python3 track2.py kjhgfds.jpg
 * When the image pops up, click 'Shift' button on the keyboard, output can be seen in the terminal
+
+
+# Train the model
+
+* cd src
+* python ml.py cnn train image
+
+# Existing Work
+
+* In general, people use sliding window techniques for finding the labels
+
+
+# Methodology:
+
+* Write a mathematical expression in the sketchpad http://krishnakarthik.me/abhyasa/ and save the image
+* Feed the image python3 track2.py kjhgfds.jpg for the latex expression
+* Finding Contours
+	- Using cv2.findContours, we obtain the contours (fresh_countours.png) 
+	- We ignore the boxes with more than 60% of the area overlapping with other boxes (c108sigma_eliminate_inside_contours.png)
+	- This is the final image (c108sigma_contours_final.png)
+* Processing the boxes
+	- Crop the boxes using PIL.Image's crop function and get rectangular images out of the boxes (_ppt17.png)
+	- If height < width, will add (width-height)/2 on left and right sides of the image, which will then gives a squared image of (Height x Height)-(_sqrd17.png) and then use cv2.resize() to convert into 45x45 image(_small.png) - matplotlib import pyplot as plt for saving the image
+	- We apply skeletonize() from skimage.morphology, for thinning the image - (output_17.png)
+* Finding the Labels
+	- Call the classifier and get the label with the highest probability
+	- !,i,= -> these symbols have 2 parts, for these we have increased the height of the contour by 25% above and below, and then process the image again using the above techniques, and then classify the new boxes
+* Locating the labels in the original image
+	- Have a look at this example(beta_only.png), when we traverse through the boxes, sorted along the X-coordinate, a new character can assume many positions like superscript, subscript, on the same level,.. 
+	- To handle this, we have considered characters to be nodes, with top, bottom, next, and parent attributes
+	- And we recursively look for the level in which new character is going to be present
+	- For this (beta_only.png) as input, we get this $ \sigma_{p}\beta_{3}^{k^{1}_{2}} $ expression as output
