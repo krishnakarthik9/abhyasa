@@ -4,7 +4,7 @@ from keras.layers.convolutional import MaxPooling2D
 from keras.layers.core import Activation
 from keras.layers.core import Flatten
 from keras.layers.core import Dense
-from keras.utils import plot_model
+#from keras.utils import plot_model
 class CNN:
 	def build(self, Width, Height, Depth, total_classes, Saved_Weights_Path=None):
 		# Initialize the Model
@@ -34,7 +34,7 @@ class CNN:
 		# Using Softmax Classifier for Linear Classification
 		model.add(Dense(total_classes))
 		model.add(Activation("softmax"))
-		plot_model(model,show_shapes=True,to_file='model.png')
+		#plot_model(model,show_shapes=True,to_file='model.png')
 
 		# If the saved_weights file is already present i.e model is pre-trained, load that weights
 		if Saved_Weights_Path is not None:
