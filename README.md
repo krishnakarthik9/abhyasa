@@ -1,16 +1,19 @@
 # abhyasa
-Introduction to Machine Learning(CS771A) Course project. Team:Aravind, Gowtham, Abhishek, Harsha, Karthik
+Converts a hand written mathematical expressions into Latex code.
+
+Introduction to Machine Learning(CS771A) Course project. 
+Team: Aravind, Gowtham, Abhishek, Harsha, Karthik
 
 
 Kaggle Dataset:
 https://drive.google.com/open?id=0B86eHLR6LlhEVjhWc19uUDFTSDg
 
-
+```bash
 python ml.py cnn train image
 python ml.py cnn predict file
 
 
-python file_generate_code.py 1  (will generate script_1.sh)
+python file_generate_code.py 1  # (will generate script_1.sh)
 bash script_1.sh
 
 
@@ -20,11 +23,7 @@ python ml_version_2.py cnn predict file
 
 
 python predict_svm.py test/1
-
-
-
-import os
-os.listdir('./data')
+```
 
 
 
@@ -35,7 +34,7 @@ Test accuracy for multiple batch sizes and num_epochs:
 
 use ml_report.py setting batch_epoch to required value
 
-run as python ml_report.py
+run as `python ml_report.py`
 
 check accuracy vs epochs plot for each if needed
 
@@ -47,7 +46,7 @@ Data Pruning:
 
 
 CNN Algorithm:
-
+```
 keras->optimizers->SGD for optimization
 
 keras for CNN
@@ -61,29 +60,35 @@ Layer 3 -> POOL Layer -> ReLU activation
 Layer 4 -> Fully Connected -> ReLU activation
 
 finally softmax for linear classification(look at neural_network.py)
+```
 
 Hyper Parameters:
-
+```
 Batch Size for SGD
 
 Number of epochs for SGD
 
 GD parameters-lr,decay,momentum,nesterov??
+```
 
 CNN model descripton is saved to model.png
 
 
 # Execution
-
-* cd digitRecognition
-* python3 track2.py kjhgfds.jpg
+```bash
+cd digitRecognition
+python3 track2.py kjhgfds.jpg
+```
 * When the image pops up, click 'Shift' button on the keyboard, output can be seen in the terminal
+
 
 
 # Train the model
 
-* cd src
-* python ml.py cnn train image
+```bash
+cd src
+python ml.py cnn train image
+```
 
 # Existing Work
 
@@ -109,4 +114,4 @@ CNN model descripton is saved to model.png
 	- Have a look at this example(beta_only.png), when we traverse through the boxes, sorted along the X-coordinate, a new character can assume many positions like superscript, subscript, on the same level,.. 
 	- To handle this, we have considered characters to be nodes, with top, bottom, next, and parent attributes
 	- And we recursively look for the level in which new character is going to be present
-	- For this (beta_only.png) as input, we get this $ \sigma_{p}\beta_{3}^{k^{1}_{2}} $ expression as output
+	- For this (beta_only.png) as input, we get this `$ \sigma_{p}\beta_{3}^{k^{1}_{2}} $` expression as output
