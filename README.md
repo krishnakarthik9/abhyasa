@@ -92,7 +92,7 @@ CNN model descripton is saved to model.png
 
 # Methodology:
 
-* Write a mathematical expression in the sketchpad http://krishnakarthik.me/abhyasa/ and save the image
+* Write a mathematical expression in the sketchpad http://krishnakarthik.in/abhyasa/ and save the image
 * Feed the image python3 track2.py kjhgfds.jpg for the latex expression
 * Finding Contours
 	- Using cv2.findContours, we obtain the contours (fresh_countours.png) 
